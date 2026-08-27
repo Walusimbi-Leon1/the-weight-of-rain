@@ -1,0 +1,21 @@
+{
+  "title": "The Weight of Rain",
+  "subtitle": "Poetry",
+  "genre": "Poetry",
+  "author": "Walusimbi Leon",
+  "description": "A sequence of poems about weather, memory, and the long distances between people \u2014 rain as the language of everything unsaid.",
+  "style": "Free verse, musical, image-dense. Each poem a small climate. Restraint over explanation.",
+  "characters": "A speaker who addresses the absent, the weather, and the self.",
+  "setting": "Interior and exterior weather; a city and a village held in memory.",
+  "notes": "Open with a poem titled 'First Rain' about the smell of dust turning to earth. Each chapter a new poem or short sequence.",
+  "chapterTitle": "Poem",
+  "mdFiles": [
+    "v2.0/book.md"
+  ],
+  "htmlFiles": [
+    "v2.0/book.html"
+  ],
+  "indexInject": null,
+  "mdHeadingLevel": 3,
+  "targetWords": 2000
+}
