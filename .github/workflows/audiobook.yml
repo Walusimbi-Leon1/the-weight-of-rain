@@ -43,7 +43,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: "pip"
 
       - name: Install Kokoro + ffmpeg
         # Kokoro-82M is ~82M params; torch comes in as a dep (~2 min download).
