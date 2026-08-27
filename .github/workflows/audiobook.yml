@@ -2,31 +2,27 @@ name: Audiobook Generation
 
 on:
   schedule:
-    # Every 3 days — staggered hour per book to distribute load
-    # Override via workflow_dispatch for on-demand runs
-    - cron: '0 21 */3 * *'   # ← each book repo uses its own staggered hour (see repo note)
+    # Every 3 days, staggered hour per book repo to spread CI load.
+    # ← each repo overrides its hour; this template default is 07:00 UTC
+    - cron: '0 21 */3 * *'
   workflow_dispatch:
 
-# Audiobook pipeline: runs on GitHub runner (fresh IP, not IP-banned),
-# SSHes into the Kamatera VPS (Kokoro TTS venv at /opt/kokoro-env),
-# generates a single 128kbps MP3 from the book's current v2.0/book.md,
-# scp's it back, and creates/uploads a GitHub release asset.
-# Release tag increments: v1.0-audiobook, v2.0-audiobook, ... so audiobooks
-# accumulate in Releases just like the text editions.
-# ─────────────────────────────────────────────────────────────────────────
+# ── Self-contained audiobook pipeline (no VPS) ───────────────────────────────
+# Runs Kokoro-82M directly on the GitHub Actions runner, generates a single
+# 128kbps MP3 from the book's current v2.0/book.md, and creates/updates a
+# GitHub release with the MP3 asset. Release tags INCREMENT per generation:
+#   v1.0-audiobook, v2.0-audiobook, v3.0-audiobook, ...
+# so audiobooks accumulate in Releases just like the text editions add on.
+# ──────────────────────────────────────────────────────────────────────────────
 # Secrets required in the repo:
-#   GH_PUSH_TOKEN     — GitHub PAT with 'repo' scope (reuse from write-book)
-#   KAMATERRA_HOST    — e.g. 45.147.251.53
-#   KAMATERRA_USER    — e.g. root
-#   KAMATERRA_SSH_KEY — private SSH key (ssh-ed25519) for the Kamatera audiobook VPS
-#   KAMATERRA_SSH_PORT (optional, default 22)
+#   GH_PUSH_TOKEN — GitHub PAT with 'repo' scope (reuse from write-book; already set)
+#   KAMATERRA_HOST / KAMATERRA_USER / KAMATERRA_SSH_KEY — IGNORED now (legacy; safe to leave unset)
 
 env:
-  SSH_OPTS: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR
   BOOK_MD: v2.0/book.md
-  VOICE: af_heart          # warm, expressive American female (matches SGSS style)
-  ATEMPO: 0.85             # 15% slower — matches salt-and-silk v1.0-audiobook
-  BITRATE: 128k            # matches existing audiobooks
+  VOICE: af_heart      # warm, expressive American female (matches SGSS style / salt-and-silk recipe)
+  SPEED: "0.85"        # 15% slower via ffmpeg atempo (matches salt-and-silk v1.0-audiobook)
+  BITRATE: "128k"      # matches existing audiobooks
 
 jobs:
   generate-audiobook:
@@ -37,106 +33,85 @@ jobs:
         with:
           token: ${{ secrets.GH_PUSH_TOKEN }}
 
-      - name: Read book metadata
+      - name: Read book title
         id: meta
         run: |
-          python3 scripts/book-meta.py
-          echo "title=$(python3 -c "import json;print(json.load(open(\"${{ env.BOOK_MD }}\".replace('v2.0/book.md','book.config.json')))\"])")" >> "$GITHUB_OUTPUT"
+          python3 scripts/book-meta.py > title.txt
+          echo "title=$(cat title.txt)" >> "$GITHUB_OUTPUT"
 
-      - name: Install SSH tools
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Kokoro + ffmpeg
+        # Kokoro-82M is ~82M params; torch comes in as a dep (~2 min download).
         run: |
-          sudo apt-get update -q && sudo apt-get install -y -qq sshpass ffmpeg curl jq >/dev/null
-          mkdir -p ~/.ssh && echo "${{ secrets.KAMATERRA_SSH_KEY }}" > ~/.ssh/kam.key
-          chmod 600 ~/.ssh/kam.key
+          python3 -m pip install --upgrade pip
+          pip install --quiet "kokoro==0.9.4" "numpy<2" 2>&1 | tail -3
+          if ! command -v ffmpeg >/dev/null; then sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg >/dev/null; fi
+          ffmpeg -version | head -1
 
       - name: Determine next release version
         id: version
         run: |
-          # Find highest existing X.Y-audiobook tag
-          EXISTING=$(gh release list --limit 100 --json tagName -q '.[].tagName' \
+          EXISTING=$(gh release list --limit 100 --json tagName \
             --repo "${{ github.repository }}" | grep -oE '[0-9]+\.[0-9]+-audiobook' | sort -V | tail -1)
-          if [ -z "$EXISTING" ]; then N="1.0"; else
-            CUR=$(echo "$EXISTING" | grep -oE '^[0-9]+\.[0-9]+')
-            MAJ=$(echo "$CUR" | cut -d. -f1); MIN=$(echo "$CUR" | cut -d. -f2)
+          if [ -z "$EXISTING" ]; then VER="1.0"; else
+            CUR="${EXISTING%%-audiobook}"
+            MAJ="${CUR%%.*}"; MIN="${CUR#*.}"
             MIN=$((MIN+1))
             if [ "$MIN" -ge 10 ]; then MIN=0; MAJ=$((MAJ+1)); fi
-            N="$MAJ.$MIN"
+            VER="$MAJ.$MIN"
           fi
-          echo "version=$N" >> "$GITHUB_OUTPUT"
-          echo "next_release_tag=v${N}-audiobook" >> "$GITHUB_OUTPUT"
+          echo "version=$VER" >> "$GITHUB_OUTPUT"
+          echo "tag=v${VER}-audiobook" >> "$GITHUB_OUTPUT"
 
-      - name: Upload book.md to VPS
-        run: |
-          ssh $SSH_OPTS -p "${{ secrets.KAMATERRA_SSH_PORT || 22 }}" \
-            "${{ secrets.KAMATERRA_USER }}@${{ secrets.KAMATERRA_HOST }}" \
-            "mkdir -p /opt/books/${{ github.event.repository.name }}"
-          scp $SSH_OPTS -P "${{ secrets.KAMATERRA_SSH_PORT || 22 }}" \
-            "${{ env.BOOK_MD }}" \
-            "${{ secrets.KAMATERRA_USER }}@${{ secrets.KAMATERRA_HOST }}:/opt/books/${{ github.event.repository.name }}/book.md"
-
-      - name: Generate audiobook via Kokoro on VPS
-        run: |
-          ssh $SSH_OPTS -p "${{ secrets.KAMATERRA_SSH_PORT || 22 }}" \
-            "${{ secrets.KAMATERRA_USER }}@${{ secrets.KAMATERRA_HOST }}" \
-            "bash scripts/run-kokoro.sh /opt/books/${{ github.event.repository.name }}/book.md \
-               /opt/audiobooks/${{ github.event.repository.name }}_v${{ steps.version.outputs.version }}.mp3 \
-               ${{ env.VOICE }} ${{ env.ATEMPO }} ${{ env.BITRATE }}"
-
-      - name: Fetch generated MP3
+      - name: Generate audiobook (Kokoro)
         run: |
           mkdir -p dist
-          scp $SSH_OPTS -P "${{ secrets.KAMATERRA_SSH_PORT || 22 }}" \
-            "${{ secrets.KAMATERRA_USER }}@${{ secrets.KAMATERRA_HOST }}:/opt/audiobooks/${{ github.event.repository.name }}_v${{ steps.version.outputs.version }}.mp3 \
-            dist/book.mp3
-          ls -lh dist/book.mp3
+          python3 scripts/gen-audiobook.py \
+            --input "${{ env.BOOK_MD }}" \
+            --output "dist/track.wav" \
+            --voice "${{ env.VOICE }}"
+
+      - name: Encode to 128kbps MP3 @ 15% slower
+        run: |
+          ffmpeg -y -i dist/track.wav -af "atempo=${{ env.SPEED }}" -ar 44100 -b:a "${{ env.BITRATE }}" \
+            "dist/${{ github.event.repository.name }}_v${{ steps.version.outputs.version }}.mp3" -loglevel warning
+          ls -lh dist/
+          DUR=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 dist/*.mp3 | awk '{printf "%.1f",$1/60}')
+          echo "duration_min=$DUR" >> "$GITHUB_OUTPUT"
+        id: encode
 
       - name: Build release notes
         run: |
-          WORDS=$(wc -w < "${{ env.BOOK_MD }}")
+          WORDS=$(wc -w < "${{ env.BOOK_MD }}" | awk '{print $1}')
           CHAPS=$(grep -cE '^#{1,3} ' "${{ env.BOOK_MD }}" || true)
-          DUR=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 dist/book.mp3 \
-            | awk '{printf "%.1f", $1/60}')
-          cat > dist/RELEASE.md <<EOF
-## Audiobook — ${{ steps.meta.outputs.title }}
-
-TTS-generated audiobook using Kokoro-82M neural voice.
-
-**Engine:** Kokoro-82M (open-weight TTS, 82M parameters)
-**Voice:** ${VOICE} (warm, expressive American female)
-**Speed:** 15% slower (atempo=${ATEMPO} via ffmpeg)
-**Quality:** ${BITRATE} MP3
-**Duration:** ~${DUR} minutes (${WORDS} words, ${CHAPS} chapters)
-**Content:** Complete book — current snapshot
-
-> Each audiobook release captures the book at that point in its writing journey.
-> As the book grows, new audiobook releases add on (v${{ steps.version.outputs.version }} builds on previous).
-
-Generated via GitHub Actions on the Kamatera VPS (Ubuntu 26.04, /opt/kokoro-env).
-EOF
+          python3 scripts/gen-release-notes.py \
+            --title "$(cat title.txt)" \
+            --version "${{ steps.version.outputs.version }}" \
+            --words "$WORDS" --chapters "$CHAPS" \
+            --duration "${{ steps.encode.outputs.duration_min }}" \
+            --voice "${{ env.VOICE }}" --speed "${{ env.SPEED }}" --bitrate "${{ env.BITRATE }}" \
+            > dist/RELEASE.md
+          cat dist/RELEASE.md
 
       - name: Create / update GitHub release
         env:
           GH_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
         run: |
-          TAG="${{ steps.version.outputs.next_release_tag }}"
-          # If release exists, update notes + re-upload asset; else create
+          TAG="${{ steps.version.outputs.tag }}"
+          ASSET_NAME="${{ github.event.repository.name }}_v${{ steps.version.outputs.version }}.mp3"
           if gh release view "$TAG" --repo "${{ github.repository }}" >/dev/null 2>&1; then
-            gh release delete-asset "$TAG" "${{ github.event.repository.name }}_v${{ steps.version.outputs.version }}.mp3" \
-              --repo "${{ github.repository }}" -q || true
-            gh release upload "$TAG" "dist/book.mp3" --name "${{ github.event.repository.name }}_v${{ steps.version.outputs.version }}.mp3" \
-              --repo "${{ github.repository }}"
+            gh release delete-asset "$TAG" "$ASSET_NAME" --repo "${{ github.repository }}" -q || true
+            gh release upload "$TAG" "dist/${ASSET_NAME}" --name "$ASSET_NAME" --repo "${{ github.repository }}"
             gh release edit "$TAG" --notes-file dist/RELEASE.md --repo "${{ github.repository }}"
           else
-            gh release create "$TAG" "dist/book.mp3" \
-              --title "Audiobook — ${{ steps.meta.outputs.title }} (v${{ steps.version.outputs.version }})" \
+            gh release create "$TAG" "dist/${ASSET_NAME}" \
+              --title "Audiobook — $(cat title.txt) (v${{ steps.version.outputs.version }})" \
               --notes-file dist/RELEASE.md \
               --repo "${{ github.repository }}"
           fi
-          echo "✅ Released ${{ github.repository }}@$TAG"
-
-      - name: Cleanup VPS artifacts (keep latest 3)
-        if: always()
-        run: |
-          ssh $SSH_OPTS -p "${{ secrets.KAMATERRA_SSH_PORT || 22 }}" \
-            "${{ secrets.KAMATERRA_USER }}@${{ secrets.KAMATERRA_HOST }}" \
-            "ls -t /opt/audiobooks/${{ github.event.repository.name }}_v*.mp3 2>/dev/null | tail -n +4 | xargs rm -f"
+          echo "✅ Released ${{ github.repository }} @ $TAG"
