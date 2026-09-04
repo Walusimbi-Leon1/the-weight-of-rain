@@ -960,6 +960,64 @@ She reached out and touched my face. Her hand was dry and warm. The rain had not
 
 She let go of my face. She turned. She went back into the kitchen, and I stood at the door, wet and changed, and I knew that she was right, and I knew that I would not forget, and I knew that the first rain had written itself into me the way it had written itself into the earth, and that I would be carrying it for the rest of my life, that I would be carrying it still, that I am carrying it now, now, as I write this, as the smell of that first rain rises from the page, as the dust of that village road rises to meet it, as I stand again at the edge of that field, my arms out, my face lifted, my mouth open, waiting for the rain that is always returning, waiting for the rain that is always the first rain, waiting for the rain that will find me where I have been waiting and take me into itself and show me what I have been carrying without knowing.
 
+### The Rain That Never Leaves
+
+First Rain
+
+Dust remembers the shape of water. It holds the memory of the sky before the sky gives in, the way a held breath remembers the mouth that released it. The smell rises before the first drop falls — a dry ghost, a longing made tangible, the earth's long-held breath finally let go. Then the rain answers, and the smell changes. Dust becomes earth. Earth becomes a mouth. The mouth opens, and the first word is green.
+
+Years later, in the city, I smell it again. I am walking down a street I do not love, past buildings that do not remember me, and the air changes. It is not the smell of the city — not the exhaust, not the wet concrete, not the rank breath of the river. It is older. It is the smell of the village field, the smell of the first rain, the smell of dust turning to earth. It stops me. I stand in the middle of the pavement, and the people part around me like water around a stone, and I am not in the city anymore. I am at the edge of the field. The cracks are opening. The sky is bending down. The rain is finding me where I have been waiting, and it is showing me what I have been carrying without knowing.
+
+I have been carrying you. That is what the rain shows me. You, who are not here. You, who have never been here, not in this city, not in this rain, not in any of the years I have spent learning to speak in the language of weather. You are the absent one, the one who does not arrive, the one who is always the shape of the sky before the rain — a presence that is not yet present, a promise that has not yet broken. I have been carrying you the way the dust carried the water: as a memory of what is possible, as a weight that is also a direction.
+
+The poem I wrote in the field — I did not know I was writing it to you. I thought it was about the earth, about the green, about my grandmother's hands and the flour-white dust that had settled on them. But the rain knew. The rain always knows. The rain was the language of everything unsaid, and what was unsaid was this: that the first rain teaches you what you are made of, and I am made of water and dust and the meeting between them, and the meeting is you, and the distance between us is the air between the water and the dust, the moment before they touch, the long moment that is the whole conversation.
+
+In the city, the rain does not smell like the first rain. The rain in the city smells of stone and metal, of the places where water is not welcome, of the roofs that push it away. But sometimes, when the rain has been falling for a long time, when the concrete is saturated and the drains are full and the streets are rivers, then the city begins to smell like a field. I have walked in that smell for hours. I have let it carry me to the edge of the city, to the place where the buildings stop and the earth begins. I have stood there, in the wet, in the dark, and I have opened my mouth, and I have waited for the rain to find me, and it always does.
+
+But you do not. You do not find me. You are the rain that never arrives, the one that hangs on the horizon, the one that the weather reports mention but never deliver. I have written you many letters. I have addressed them to the sky, to the clouds, to the field, to the dust, to the green. I have folded them into the smell of the first rain and sent them out into the weather. I do not know if they have reached you. I do not know if you are a place that can be reached. I know only that the rain is the language, and I am speaking, and you are the silence at the end of the sentence, the pause before the next poem begins.
+
+My grandmother said, "You are weather. You are climate." She did not say, "You are the rain that falls alone." She did not say, "You are the field that waits for rain that will not come." She said only that I was made of the meeting, and that the meeting was sacred. But she did not know about you. She did not know about the distance, the long distance between the village and the city, between the first rain and the last, between the mouth that opens and the mouth that does not answer. Or perhaps she did. Perhaps that is why she touched my face and said, "Do not forget." Perhaps she knew that I would spend my life remembering, and that remembering is the weight we carry when the rain has gone.
+
+Tonight, the rain is falling in the city. I am standing at the window. The glass is streaked with water. The streetlights are smearing their light into the wet. And I am smelling it again — the dust, the earth, the first rain. It is rising from the pavement, from the gutters, from the soil beneath the asphalt, the soil that is still there, buried and patient, the soil that remembers what it was before the city covered it. I am standing at the window, and I am not seeing the city. I am seeing the field. I am seeing the cracks closing. I am seeing the green rising. I am seeing the old man under the eaves, the woman gathering her laundry slowly, the children dancing with their mouths open. I am seeing my grandmother at the door, her hands no longer flour-white, her smile like the first crack of light after the rain.
+
+And you are there. Not as a figure, not as a face, but as the shape of the absence that makes the presence visible. You are the space between the raindrops. You are the pause in the conversation. You are the distance that the rain is always trying to cross, the distance that is the whole reason for the rain.
+
+I have learned to live in the distance. I have learned to carry it the way the dust carried the water — as a memory of what is possible, as a weight that is also a direction. I have learned to speak the language of weather, to read the sky, to know the difference between the first rain and the second, between the rain that falls and the rain that is only remembered. I have learned that every rain is the first rain, because every rain finds you where you have been waiting, and every rain takes you into itself, and every rain shows you what you have been carrying without knowing.
+
+And what I have been carrying, what I am carrying now, is you. You are the dust in the rain. You are the earth in the water. You are the green that is rising from the meeting. You are the conversation that has been going on since before I was born, and you will be the conversation that continues after I am gone, because the rain does not stop, and the dust does not stop waiting, and the earth does not stop drinking, and the language does not stop being spoken.
+
+I close my eyes. I press my forehead against the glass. I let the rain talk to me. It is saying the same thing it has always said. It is saying that the first rain is the rain that teaches you what you are made of. It is saying that I am made of water and dust and the meeting between them. It is saying that the meeting is you, and the distance is the rain, and the rain is the language, and the language is the only way I have ever known how to reach you.
+
+I do not know if you will ever read this. I do not know if you will ever smell the first rain the way I smell it, if you will ever stand at the edge of a field with your arms out and your mouth open, waiting for the sky to remember you. But I know that the rain is falling. I know that the dust is turning to earth. I know that the green is rising. I know that the conversation is continuing. And I know that I am still speaking, and that you are still the silence at the end of the sentence, and that the silence is not empty — it is full of rain, full of dust, full of earth, full of the weight of everything I have not said and will never say, except in weather.
+
+So I write this chapter in the rain. I write it in the smell of dust turning to earth. I write it for you, for the absent one, for the one who is the shape of the sky before the rain. I write it because the rain is the language, and I am made of the language, and the language is made of me, and the first rain is the rain that teaches you what you are made of, and I am made of this — this waiting, this remembering, this carrying, this rain that never leaves, this rain that is always falling, always finding me, always showing me what I have been carrying without knowing.
+
+I am carrying you. I am carrying the field. I am carrying the village, the grandmother, the old man, the woman, the children, the dogs, the goats, the trees. I am carrying the dust and the water and the meeting between them. I am carrying the green that has not yet risen and the green that has already risen and the green that will rise again when the next rain comes.
+
+And you, wherever you are, whoever you are, whatever distance separates us — you are the rain that is always returning. You are the first rain. You are the last rain. You are the rain that finds me where I have been waiting, and takes me into itself, and shows me what I have been carrying without knowing.
+
+And I am writing it down. I am writing it all down. I am writing it in the language of weather, in the language of dust and earth and water, in the language of the first rain, in the language that is the only thing I have ever had to give you, the only thing I have ever had to say.
+
+This is the weight of rain. This is the weight of you. This is the weight of carrying the distance and the meeting and the conversation that has been going on since before I was born. This is the weight of the first rain, and the first rain is made of me, and I am made of you, and you are made of the rain, and the rain is made of everything unsaid, and everything unsaid is made of love, and love is made of the dust turning to earth, and the earth is made of the rain, and the rain is made of the beginning, and the beginning is made of the waiting, and the waiting is made of the return.
+
+And I am waiting. I am always waiting. I am standing at the edge of the field, my arms out, my face lifted, my mouth open, waiting for the rain that is always the first rain, waiting for the rain that will find me where I have been waiting and take me into itself and show me what I have been carrying without knowing.
+
+And the rain is falling. And the dust is turning to earth. And the earth is drinking. And the green is rising. And the distance is closing. And the conversation is continuing.
+
+And you are there.
+
+You are always there.
+
+In the rain.
+
+In the dust.
+
+In the earth.
+
+In the green.
+
+In the weight of everything I have carried and will carry and am carrying now, as I write this, as the rain falls on the city, as the city remembers the field, as the field remembers the sky, as the sky remembers the dust, as the dust remembers the water, as the water remembers the beginning, as the beginning remembers you.
+
 ---
 
 ## About This Book
